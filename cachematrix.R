@@ -1,15 +1,29 @@
-## Put comments here that give an overall description of what your
-## functions do
+## Solution of programming assingment #2 - creating a matrix type that caches its inverse
 
-## Write a short comment describing this function
+## Creates a special matrix that can cache its inverse
 
 makeCacheMatrix <- function(x = matrix()) {
-
+  inv <- NULL
+  set <- function(y) {
+    x <<- y
+    inv <<- NULL # Clearing the cache whenever the matrix changes
+  }
+  get <- function() x
+  setInverse <- function(inverse) inv <<- inverse
+  getInverse <- function() inv
+  list(set = set, get = get, setInverse = setInverse, getInverse = getInverse)
 }
 
 
-## Write a short comment describing this function
+## Computes the input matrix x's inverse, or returns the cached inverse immediately if already solved
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+  inv <- x$getInverse()
+  if(!is.null(inv)) {
+    message("Getting cached inverse")
+    return(inv)
+  }
+  inv <- solve(x$get(), ...)
+  x$setInverse(inv)
+  inv
 }
